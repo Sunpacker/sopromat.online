@@ -1,0 +1,62 @@
+/// colors
+// intent
+$primary: #00B4DB
+$light-primary: transparentize(#00B4DB, .85)
+$primary-invert: findColorInvert($primary)
+$accent: red
+$light-accent: transparentize($accent, .85)
+$dark-accent: darken($accent, 10%)
+$secondary: #184d47
+// common
+$white: white
+$black: #212121
+$green: #bde7a4
+$grey: transparentize($black, .3)
+$light-grey: transparentize($black, .9)
+$lighten-grey: transparentize($black, .97)
+$bgc1: #fff
+$bgc2: silver
+// transparent
+$trans15: transparentize(#1B262C, .85)
+
+
+/// fonts
+$font1: 'Open Sans', Arial, sans-serif
+$font2: Montserrat, Arial, sans-serif
+$family-primary: $font1
+$family-secondary: $font2
+
+/// styling
+$br: 1em // border-radius
+$tr: .25s all // transition
+$bs: 0 0 1.5rem rgba(0,0,0,.06) // box-shadow
+
+// placeholders
+%item-hoverable
+	transition: $tr
+	cursor: pointer
+	&:hover
+		transform: scale(1.025)
+.item-hoverable
+	@extend %item-hoverable
+
+%icon-hoverable
+	display: inline-block
+	transition: $tr
+	cursor: pointer
+	&:hover
+		color: $primary
+		transform: scale(1.25)
+.icon-hoverable
+	@extend %icon-hoverable
+
+%border-hoverable
+	padding: 1em
+	color: $black
+	border: 1px solid transparent
+	border-radius: $br
+	cursor: pointer
+	&:hover
+		border-color: $light-grey
+.border-hoverable
+	@extend %border-hoverable

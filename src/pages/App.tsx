@@ -1,14 +1,15 @@
 import React from 'react'
+import { DefaultLayout } from '../layouts'
 
 
-const App: React.FC = (): React.ReactElement => {
+const Landing: React.FC = (): React.ReactElement => {
 	
 	return (
-		<div>
-			
-		</div>
+		<DefaultLayout>
+			app page
+		</DefaultLayout>
 	)
 }
 
 
-export default App
+export default Landing

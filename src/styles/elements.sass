@@ -1,0 +1,67 @@
+a
+	text-decoration: none
+	color: $primary
+	transition: .2s all
+
+h1
+	font: bold 4em $font2
+h2
+	font: bold 3.375em $font2
+h3, h4
+	font-weight: bold
+	font-size: 1.25rem
+h5, h6
+	font-size: 1.15rem
+
+input, select
+	&:focus
+		outline: none
+
+.text-size
+	&_0
+		font-size: .667em
+	&_1
+		font-size: 1em
+	&_2
+		font-size: 1.5em
+	&_3
+		font-size: 2.25em
+	&_4
+		font-size: 3.375em
+	&_5
+		font-size: 4em
+	
+textarea
+	padding: 2rem
+	min-height: 1.75rem
+	width: 100%
+	border: 1px solid black
+	border-radius: $br
+	resize: vertical
+	box-sizing: border-box
+
+select
+	border: 1px solid $secondary
+
+button
+	font: bold 1rem $font2
+	padding: .75em 2.5em
+	border: none
+	color: white
+	transition: $tr
+	border-radius: $br
+	background-color: $primary
+	box-shadow: 0 0 1.25em transparentize($primary, .7)
+	cursor: pointer
+	&:disabled, &[disabled]
+		background-color: transparentize($primary, .5)
+	&:focus
+		outline: none
+	&:hover
+		transform: scale(1.03)
+	&:active
+		transform: scale(.98)
+	&.inversed
+		color: $primary
+		background-color: transparent
+		box-shadow: none

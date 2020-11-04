@@ -1,8 +1,11 @@
 @import 'smart-grid'
-@import 'vars'
-@import 'components'
-
 +reset()
+	
+@import 'vars'
+@import 'elements'
+@import 'components'
+@import 'pages'
+
 
 *::selection
 	color: white
@@ -12,109 +15,10 @@ html
 	max-width: 100vw
 	font: normal 20px $font1
 	overflow-x: hidden
-	transition: .65s all
-	background-color: $bgc2
-
-a
-	text-decoration: none
-	color: $primary
-	transition: .2s all
-
-h1, h2, h3, h4
-	font-weight: bold
-	font-size: 1.25rem
-h5, h6
-	font-size: 1.15rem
-
-input, select
-	&:focus
-		outline: none
-
-textarea
-	padding: 2rem
-	min-height: 1.75rem
-	width: 100%
-	border: 1px solid black
-	border-radius: $br
-	resize: vertical
-	box-sizing: border-box
-
-select
-	border: 1px solid $secondary
-
-button
-	font: normal 1rem $font1
-	padding: .75rem
-	border: none
-	color: white
-	background-color: $primary
-	cursor: pointer
-	&:disabled, &[disabled]
-		background-color: transparentize($primary, .5)
-	&:focus
-		outline: none
+	color: $black
+	background-color: $bgc1
+	// transition: .65s all // global animation
 
 .container
 	+wrapper()
 
-.divider
-	position: relative
-	height: 3rem
-	&:after
-		content: ''
-		position: absolute
-		top: 0
-		left: 50%
-		margin-left: -50vw
-		width: 100vw
-		max-width: 100vw
-		height: 100%
-		background-color: $bgc1
-
-//
-// components
-//
-nav
-	font-family: $font2
-	background-color: $bgc2
-	.menu
-		display: flex
-		align-items: center
-		margin: 0 auto
-		padding: .5rem 2rem 1rem 3rem
-		max-width: 1340px
-		font-size: 26px
-		.logo
-			flex: 1
-			font-size: 36px
-			color: $primary
-			img
-				display: block
-				margin: 0 auto
-			p
-				text-align: center
-		.links-wrapper
-			display: flex
-			flex: 6.25
-			.links
-				margin-left: 7rem
-				margin-top: 1.5rem
-				a
-					padding-bottom: .2rem
-					margin-right: 1.5rem
-					color: inherit
-					&:hover, &.nuxt-link-active
-						border-bottom: 2px solid $primary
-						color: $primary
-			.login
-				margin-top: 1.5rem
-				margin-left: auto
-				span
-					color: $primary
-					cursor: pointer
-					&:first-child
-						margin-right: 1.25rem
-						padding: 0 1.5rem
-						border: 1.3px solid $primary
-						border-radius: 100rem
-	.mobile

@@ -1,1 +1,0 @@
-{"ast":null,"code":"export { default as DefaultLayout } from './default';","map":{"version":3,"sources":["D:/WEB/_current/sopromat.online/src/layouts/index.ts"],"names":["default","DefaultLayout"],"mappings":"AAAA,SAASA,OAAO,IAAIC,aAApB,QAAyC,WAAzC","sourcesContent":["export { default as DefaultLayout } from './default'\n"]},"metadata":{},"sourceType":"module"}

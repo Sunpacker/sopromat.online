@@ -1,1 +1,0 @@
-{"ast":null,"code":"export { default as Button } from './Button';","map":{"version":3,"sources":["D:/WEB/_current/sopromat.online/src/components/ui/index.ts"],"names":["default","Button"],"mappings":"AAAA,SAASA,OAAO,IAAIC,MAApB,QAAkC,UAAlC","sourcesContent":["export { default as Button } from './Button'\n"]},"metadata":{},"sourceType":"module"}

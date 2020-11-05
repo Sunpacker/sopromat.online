@@ -39,21 +39,22 @@ const Canvas: React.FC = (): React.ReactElement => {
 
   const [grid, setGrid] = useState<ILine[]>(drawGrid())
 
-	let resizeTimer: NodeJS.Timeout
-	const resizeHandler = () => {
-		clearTimeout(resizeTimer)
-		// wait until window resize will be done
-		resizeTimer = setTimeout(() => {
-			console.log(`%c[App] %cwindow resize done`, 'color: pink', '')
 
-			setGrid(drawGrid())
-		}, 250)
-	}
-	
 	useEffect(() => {
+		let resizeTimer: NodeJS.Timeout
+		const resizeHandler = () => {
+			clearTimeout(resizeTimer)
+			// wait until window resize will be done
+			resizeTimer = setTimeout(() => {
+				console.log(`%c[App] %cwindow resize done`, 'color: pink', '')
+
+				setGrid(drawGrid())
+			}, 150)
+		}
+
 		window.addEventListener('resize', resizeHandler)
 		return () => window.removeEventListener('resize', resizeHandler)
-	}, [resizeHandler])
+	}, [])
 
 	return (
 		<Stage width={window.innerWidth} height={window.innerHeight}>

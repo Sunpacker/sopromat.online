@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 import { DefaultLayout } from '../layouts'
 import { Button } from '../components/ui'
-import layout from '../styles/layouts.module.sass'
+import layout from '../styles/layout.module.sass'
 
 const ErrorPage: React.FC = (): React.ReactElement => {
 	return (

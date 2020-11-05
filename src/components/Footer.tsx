@@ -9,7 +9,7 @@ const Footer: React.FC = (): React.ReactElement => {
 				<a className="brand text-size_2">&copy; 2020 sopromat.online</a>
 			</Link>
 			<div>
-				<a href="https://sunpacker.github.io">https://sunpacker.github.io</a>
+				Разработано: <a href="https://sunpacker.github.io" target="_blank">https://sunpacker.github.io</a>
 			</div>
 		</footer>
 	)

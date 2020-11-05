@@ -1,6 +1,6 @@
 import React from 'react'
 import { Navbar, Footer } from '../components'
-import pageClass from '../styles/layouts.module.sass'
+import pageClass from '../styles/layout.module.sass'
 
 
 interface DefaultLayoutProps {

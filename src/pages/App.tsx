@@ -1,15 +1,24 @@
 import React from 'react'
-import { DefaultLayout } from '../layouts'
+import dynamic from 'next/dynamic'
+import { AppLayout } from '../layouts'
+import { LeftMenu, TopRightMenu, BottomRightMenu } from '../components/app'
 
 
-const Landing: React.FC = (): React.ReactElement => {
-	
+const CanvasComponent =  dynamic(
+  (): any => import('../components/app/Canvas'),
+  { ssr: false }
+)
+
+const App: React.FC = (): React.ReactElement => {
 	return (
-		<DefaultLayout>
-			app page
-		</DefaultLayout>
+		<AppLayout>
+			<LeftMenu />
+			<TopRightMenu />
+			<BottomRightMenu />
+			<CanvasComponent />
+		</AppLayout>
 	)
 }
 
 
-export default Landing
+export default App

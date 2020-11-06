@@ -1,17 +1,21 @@
-import React, { useEffect, useState } from 'react'
-import { Stage, Layer, Text, Line } from 'react-konva'
+import React, { useEffect, useRef, useState } from 'react'
+import { Stage, Layer, Text, Line, StageProps, KonvaNodeComponent } from 'react-konva'
+import { consoleLog } from './utils'
 
 
 const Canvas: React.FC = (): React.ReactElement => {
-	console.log('%c[App] %ccanvas component has rendered', 'color: pink', '')
+	consoleLog('canvas component has rendered%c')
 
+	let stageRef: any = useRef()
+	let scaleX: number = 1
+	let scaleY: number = 1
+
+	const [grid, setGrid] = useState<ILine[]>(drawGrid)
+	
 	interface ILine {
 		id: string;
 		points: number[];
-		stroke: string;
-		strokeWidth: number;
 	}
-
 	function drawGrid(): ILine[] {
 		const width: number = window.innerWidth
 		const height: number = window.innerHeight
@@ -21,51 +25,81 @@ const Canvas: React.FC = (): React.ReactElement => {
 		linesArray = [
 			...[...Array(Math.round(width / padding))].map((_, i) => ({
 				id: `h${i}`,
-				points: [Math.round(i * padding) + 0.5, 0, Math.round(i * padding) + 0.5, height],
-				stroke: '#ddd',
-				strokeWidth: 1
+				points: [Math.round(i * padding), 0, Math.round(i * padding), height]
 			})),
 			...[...Array(Math.round(width / padding))].map((_, i) => ({
 				id: `v${i}`,
-				points: [0, Math.round(i * padding), width, Math.round(i * padding)],
-				stroke: '#ddd',
-				strokeWidth: 1
+				points: [0, Math.round(i * padding), width, Math.round(i * padding)]
 			}))
 		]
 
-		console.log(`%c[App] %cgrid has drawn with %c${linesArray.length}%c lines`, 'color: pink', '', 'color: orange', '')
+		consoleLog(`grid has drawn with %c${linesArray.length}%c lines`)
 		return linesArray
 	}
 
-  const [grid, setGrid] = useState<ILine[]>(drawGrid())
+	let resizeTimer: NodeJS.Timeout
+	function redrawGrid(): void {
+		clearTimeout(resizeTimer)
+		// wait until window resize will be done
+		resizeTimer = setTimeout(() => {
+			setGrid(drawGrid())
+		}, 50)
+	}
 
+	// WheelEvent | any - костыль, ибо в типе KonvaEventObject<WheelEvent> нет свойств события wheel
+	const handleStageWheel = (e: WheelEvent | any): void => {
+		// const scaleBy = 1.1, oldScale = scaleX
+		// let cursor: { x: number, y: number } = { x: 0, y: 0 }
+		// cursor = stageRef.getPointerPosition()
+
+		// const mousePointTo = {
+		// 	x: (cursor.x - stageRef.x()) / oldScale,
+		// 	y: (cursor.y - stageRef.y()) / oldScale
+		// }
+
+		// const newScale = e.evt.deltaY < 0 ? oldScale * scaleBy : oldScale / scaleBy
+
+		// stageRef.scale({ x: newScale, y: newScale })
+
+		// const newPos = {
+		// 	x: cursor.x - mousePointTo.x * newScale,
+		// 	y: cursor.y - mousePointTo.y * newScale
+		// }
+		
+		// stageRef.position(newPos)
+		// stageRef.batchDraw()
+		// redrawGrid()
+	}
 
 	useEffect(() => {
-		let resizeTimer: NodeJS.Timeout
-		const resizeHandler = () => {
-			clearTimeout(resizeTimer)
-			// wait until window resize will be done
-			resizeTimer = setTimeout(() => {
-				console.log(`%c[App] %cwindow resize done`, 'color: pink', '')
+		consoleLog('window resize done%c')
 
-				setGrid(drawGrid())
-			}, 150)
-		}
-
-		window.addEventListener('resize', resizeHandler)
-		return () => window.removeEventListener('resize', resizeHandler)
+		window.addEventListener('resize', redrawGrid)
+		return () => window.removeEventListener('resize', redrawGrid)
 	}, [])
 
 	return (
-		<Stage width={window.innerWidth} height={window.innerHeight}>
+		<Stage 
+			className="stage" 
+			width={window.innerWidth} 
+			height={window.innerHeight} 
+			preventDefault={true} 
+			scaleX={scaleX} 
+			scaleY={scaleY}
+			ref={e => stageRef = e}
+			onWheel={e => handleStageWheel(e)}
+		>
       <Layer>
-				{grid[0] !== undefined ? grid.map(line => <Line
+				{grid[0] !== undefined ? (
+					grid.map(line => <Line
             key={line.id}
 						points={line.points}
-						stroke={line.stroke}
-						strokeWidth={line.strokeWidth}
+						stroke="#ddd"
+						strokeWidth={1}
 					/>
-				) : <Text x={24} y={24} text="Grid render error" fontSize={24} fill="red" />}
+				)) : (
+					<Text x={24} y={24} text="Grid render error" fontSize={24} fill="red" />
+				)}
       </Layer>
     </Stage>
 	)

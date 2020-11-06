@@ -1,22 +1,28 @@
 import React from 'react'
 import dynamic from 'next/dynamic'
-import { AppLayout } from '../layouts'
-import { LeftMenu, TopRightMenu, BottomRightMenu } from '../components/app'
+import { NextSeo } from 'next-seo'
 
 
-const CanvasComponent =  dynamic(
-  (): any => import('../components/app/Canvas'),
-  { ssr: false }
-)
+const CanvasComponent = dynamic((): any => import('../components/app/Canvas'), { ssr: false })
+const LeftMenuComponent = dynamic((): any => import('../components/app/LeftMenu'), { ssr: false })
+const TopRightMenuComponent = dynamic((): any => import('../components/app/TopRightMenu'), { ssr: false })
+const BottomRightMenuComponent = dynamic((): any => import('../components/app/BottomRightMenu'), { ssr: false })
 
 const App: React.FC = (): React.ReactElement => {
+	const SEO = {
+		title: 'Построение эпюр | sopromat.online'
+	}
+
 	return (
-		<AppLayout>
-			<LeftMenu />
-			<TopRightMenu />
-			<BottomRightMenu />
+		<div className="app">
+			<NextSeo {...SEO} />
+			<div className="menus">
+				<LeftMenuComponent />
+				<TopRightMenuComponent />
+				<BottomRightMenuComponent />
+			</div>
 			<CanvasComponent />
-		</AppLayout>
+		</div>
 	)
 }
 

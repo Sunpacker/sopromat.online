@@ -10,6 +10,7 @@ class MyDocument extends Document {
     return (
       <Html>
         <Head>
+					<title>sopromat.online</title>
 					<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400;500;700;900&family=Open+Sans:wght@300;400;600;800&display=swap" rel="stylesheet" />
 				</Head>
         <body>

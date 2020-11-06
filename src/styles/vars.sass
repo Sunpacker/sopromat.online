@@ -4,6 +4,8 @@ $primary: #ff9642
 $light-primary: transparentize($primary, .85)
 $primary-invert: findColorInvert($primary)
 $secondary: #ffe05d
+$tertiary: #fff8cd
+$quaternary: #646464
 $accent: red
 $light-accent: transparentize($accent, .85)
 $dark-accent: darken($accent, 10%)
@@ -11,9 +13,8 @@ $dark-accent: darken($accent, 10%)
 $white: white
 $black: #212121
 $green: #bde7a4
-$grey: transparentize($black, .3)
-$light-grey: transparentize($black, .9)
-$lighten-grey: transparentize($black, .97)
+$grey: transparentize($quaternary, .5)
+$lighten-grey: transparentize($quaternary, .85)
 $bgc1: #fff
 $bgc2: #F7F7F7
 // transparent
@@ -32,31 +33,16 @@ $tr: .25s all // transition
 $bs: 0 0 1.5rem rgba(0,0,0,.06) // box-shadow
 
 // placeholders
-%item-hoverable
-	transition: $tr
-	cursor: pointer
-	&:hover
-		transform: scale(1.025)
-.item-hoverable
-	@extend %item-hoverable
-
-%icon-hoverable
+%app-icon
 	display: inline-block
 	transition: $tr
 	cursor: pointer
 	&:hover
-		color: $primary
-		transform: scale(1.25)
-.icon-hoverable
-	@extend %icon-hoverable
-
-%border-hoverable
-	padding: 1em
-	color: $black
-	border: 1px solid transparent
-	border-radius: $br
-	cursor: pointer
-	&:hover
-		border-color: $light-grey
-.border-hoverable
-	@extend %border-hoverable
+		transform: scale(1.1)
+		path, rect, circle
+			fill: $primary
+	&:active
+		transform: scale(.9)
+	&.active
+		path, rect, circle
+			fill: $primary

@@ -1,27 +1,55 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Stage, Layer, Text, Line, StageProps, KonvaNodeComponent } from 'react-konva'
+import { useSelector } from 'react-redux'
+import { Stage, Layer, Text, Line, Group } from 'react-konva'
+
 import { consoleLog } from './utils'
+import { selectCurrentAction } from '../../store/ducks/app/selectors'
+import { Actions } from '../../store/ducks/app/state'
 
 
 const Canvas: React.FC = (): React.ReactElement => {
 	consoleLog('canvas component has rendered%c')
 
-	let stageRef: any = useRef()
-	let scaleX: number = 1
-	let scaleY: number = 1
-
-	const [grid, setGrid] = useState<ILine[]>(drawGrid)
-	
+	interface IStageCoords { x: number; y: number }
 	interface ILine {
 		id: string;
-		points: number[];
+		points: number[]; // x1, y1, x2, y2, ...
 	}
+
+	let stageRef: any = useRef()
+	let [stageScale, setStageScale] = useState<{x: number; y: number}>({ x: 1, y: 1 })
+	const [grid, setGrid] = useState<ILine[]>([])
+	const [stagePos, setStagePos] = React.useState<IStageCoords>({ x: 0, y: 0 })
+	
+	const currentAction = useSelector(selectCurrentAction)
+	
 	function drawGrid(): ILine[] {
 		const width: number = window.innerWidth
 		const height: number = window.innerHeight
 		const padding: number = 50
 		let linesArray: ILine[]
 		
+		// генерация горизонтальных и вертикальных линий
+		// linesArray = [
+		// 	...[...Array(Math.round(height / padding))].map((_, i) => ({
+		// 		id: `h${i}`,
+		// 		points: [
+		// 			Math.round(-stagePos.x * padding),
+		// 			Math.round(i * padding),
+		// 			Math.round(stagePos.x * padding),
+		// 			Math.round(i * padding),
+		// 		]
+		// 	})),
+		// 	...[...Array(Math.round(width / padding))].map((_, i) => ({
+		// 		id: `v${i}`,
+		// 		points: [
+		// 			Math.round(i * padding),
+		// 			Math.round(-stagePos.y * padding),
+		// 			Math.round(i * padding),
+		// 			Math.round(stagePos.y * padding),
+		// 		]
+		// 	}))
+		// ]
 		linesArray = [
 			...[...Array(Math.round(width / padding))].map((_, i) => ({
 				id: `h${i}`,
@@ -47,32 +75,45 @@ const Canvas: React.FC = (): React.ReactElement => {
 	}
 
 	// WheelEvent | any - костыль, ибо в типе KonvaEventObject<WheelEvent> нет свойств события wheel
-	const handleStageWheel = (e: WheelEvent | any): void => {
-		// const scaleBy = 1.1, oldScale = scaleX
-		// let cursor: { x: number, y: number } = { x: 0, y: 0 }
-		// cursor = stageRef.getPointerPosition()
+	function handleStageWheel(e: WheelEvent | any): void {
+		const scaleBy: number = 1.1
+		const oldScale: number = stageScale.x
+		let cursor: IStageCoords = { x: 0, y: 0 }
+		cursor = stageRef.getPointerPosition()
 
-		// const mousePointTo = {
-		// 	x: (cursor.x - stageRef.x()) / oldScale,
-		// 	y: (cursor.y - stageRef.y()) / oldScale
-		// }
+		// координаты перемещения
+		const mousePointTo: IStageCoords = {
+			x: (cursor.x - stageRef.x()) / oldScale,
+			y: (cursor.y - stageRef.y()) / oldScale
+		}
 
-		// const newScale = e.evt.deltaY < 0 ? oldScale * scaleBy : oldScale / scaleBy
+		// изменение масштаба в стейте
+		const scaleIncrease: number = oldScale * scaleBy
+		const scaleDecrease: number = oldScale / scaleBy
+		const newScale: number = e.evt.deltaY < 0 ? scaleIncrease : scaleDecrease
+		e.evt.deltaY < 0 ? setStageScale({ x: scaleIncrease, y: scaleIncrease }) : setStageScale({ x: scaleDecrease, y: scaleDecrease })
 
-		// stageRef.scale({ x: newScale, y: newScale })
+		// установка новой позиции с учетом масштаба
+		const newPos: IStageCoords = {
+			x: cursor.x - mousePointTo.x * newScale,
+			y: cursor.y - mousePointTo.y * newScale
+		}
+		stageRef.position(newPos)
 
-		// const newPos = {
-		// 	x: cursor.x - mousePointTo.x * newScale,
-		// 	y: cursor.y - mousePointTo.y * newScale
-		// }
-		
-		// stageRef.position(newPos)
-		// stageRef.batchDraw()
-		// redrawGrid()
+		// отрисовка изменений
+		stageRef.batchDraw()
+		redrawGrid()
+	}
+
+	function handleObjectPlacement(e: MouseEvent) {
+		let cursor: IStageCoords = { x: 0, y: 0 }
+		cursor = stageRef.getPointerPosition()
+		console.log(cursor)
+
 	}
 
 	useEffect(() => {
-		consoleLog('window resize done%c')
+		setGrid(drawGrid)
 
 		window.addEventListener('resize', redrawGrid)
 		return () => window.removeEventListener('resize', redrawGrid)
@@ -80,26 +121,37 @@ const Canvas: React.FC = (): React.ReactElement => {
 
 	return (
 		<Stage 
-			className="stage" 
+			className="stage"
+      x={stagePos.x}
+      y={stagePos.y}
 			width={window.innerWidth} 
 			height={window.innerHeight} 
-			preventDefault={true} 
-			scaleX={scaleX} 
-			scaleY={scaleY}
+			scaleX={stageScale.x} 
+			scaleY={stageScale.y}
 			ref={e => stageRef = e}
-			onWheel={e => handleStageWheel(e)}
+			// onWheel={e => handleStageWheel(e)}
+			// onClick={handleObjectPlacement}
+			preventDefault
+			// draggable
+			// onDragEnd={e => {
+			// 	console.log(stagePos)
+			// 	setStagePos(e.currentTarget.position())
+			// 	redrawGrid()
+			// }}
 		>
       <Layer>
-				{grid[0] !== undefined ? (
-					grid.map(line => <Line
-            key={line.id}
-						points={line.points}
-						stroke="#ddd"
-						strokeWidth={1}
-					/>
-				)) : (
-					<Text x={24} y={24} text="Grid render error" fontSize={24} fill="red" />
-				)}
+				<Group>
+					{grid && grid[0] !== undefined ? (
+						grid.map(line => <Line
+							key={line.id}
+							points={line.points}
+							stroke="#ddd"
+							strokeWidth={1}
+						/>
+					)) : (
+						<Text x={24} y={24} text="Grid render error" fontSize={24} fill="red" />
+					)}
+				</Group>
       </Layer>
     </Stage>
 	)

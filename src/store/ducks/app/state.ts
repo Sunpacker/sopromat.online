@@ -1,11 +1,24 @@
-export enum Status {
-	LOADING = 'LOADING',
-	LOADED = 'LOADED',
-	ERROR = 'ERROR',
-	NEVER = 'NEVER'
+export enum Actions {
+	SELECT = 'SELECT',
+	NODE = 'NODE',
+	ROD = 'ROD',
+	SUPPORT_1 = 'SUPPORT_1',
+	SUPPORT_2 = 'SUPPORT_2',
+	SUPPORT_3 = 'SUPPORT_3',
+	FORCE = 'FORCE',
+	LOAD = 'LOAD',
+}
+
+interface IObject {
+	position: { x: number; y: number };
+	type: Actions;
+	fill: string;
 }
 
 export interface IApp {
-	// scale: number;
-	status: Status; // TODO: статус приложения LOADED присваивается только после загрузки всех его модулей
+	objects: IObject[];
+	currentAction: Actions;
+	tip: string;
+	// scale: number; // TODO: масштаб рабочей области
+	// status: Status; // TODO: статус приложения LOADED присваивается только после загрузки всех его модулей
 }

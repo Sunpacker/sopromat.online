@@ -3,6 +3,7 @@ import { rootReducer } from './rootReducer'
 import createSagaMiddleware from 'redux-saga'
 
 import rootSaga from './sagas'
+import { IApp } from './ducks/app/state'
 
 
 declare global {
@@ -11,7 +12,7 @@ declare global {
 	}
 }
 export interface RootState {
-	
+	app: IApp
 }
 
 const composeEnhancers = (typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose

@@ -1,47 +1,82 @@
 import produce, { Draft } from 'immer'
-import { TweetActions, TweetActionsTypes } from './actionCreators'
-import { Status, ITweets, FormStatus } from './state'
+import { consoleLog } from '../../../components/app/utils'
+import { AppActions, AppActionsTypes } from './actionCreators'
+import { Actions, IApp } from './state'
 
 
-const initialTweets: ITweets = {
-	items: [],
-	status: Status.NEVER,
-	formStatus: FormStatus.NEVER
+const appInitial: IApp = {
+	currentAction: Actions.SELECT,
+	tip: `
+		<h3>Выбрать</h3>
+		<p>Редактирование элемента.</p>
+	`
 }
 
-const tweetsReducer = produce((draft: Draft<ITweets>, action: TweetActions) => {
+const appReducer = produce((draft: Draft<IApp>, action: AppActions) => {
 	switch(action.type) {
-		case TweetActionsTypes.SET_TWEETS:
-			draft.items = action.payload
-			draft.status = Status.LOADED
-			break
+		case AppActionsTypes.SET_ACTION:
+			draft.currentAction = action.payload
+
+			switch (draft.currentAction) {
+				case Actions.SELECT:
+					draft.tip = `
+						<h3>Выбрать</h3>
+						<p>Редактирование элемента.</p>
+					`
+					break
+				case Actions.NODE:
+					draft.tip = `
+						<h3>Узел</h3>
+						<p>Щелкните в любом месте, чтобы установить узел.</p>
+					`
+					break
+				case Actions.ROD:
+					draft.tip = `
+						<h3>Стержень</h3>
+						<p>Чтобы разместить стержень, необходимо выбрать 2 узла, между которыми он будет находиться.</p>
+					`
+					break
+				case Actions.SUPPORT_1:
+					draft.tip = `
+						<h3>Шарнирная подвижная опора</h3>
+						<p>Имеет две степени свободы: перемещение от воздействия горизонтальных сил и от вращающих сил, крутящих моментов.</p>
+					`
+					break
+				case Actions.SUPPORT_2:
+					draft.tip = `
+						<h3>Шарнирная неподвижная опора</h3>
+						<p>Имеет одну степень свободы: перемещение от вращающих сил, крутящих моментов.</p>
+					`
+					break
+				case Actions.SUPPORT_3:
+					draft.tip = `
+						<h3>Жесткая заделка</h3>
+						<p>Не имеет степеней свободы, препятствует всем перемещениям.</p>
+					`
+					break
+				case Actions.FORCE:
+					draft.tip = `
+						<h3>Сила</h3>
+						<p>Указывается точка приложения сосредоточенной силы на стержне.</p>
+					`
+					break
+				case Actions.LOAD:
+					draft.tip = `
+						<h3>Нагрузка</h3>
+						<p>Указываются начальная и конечная точки нагрузки на стержне.</p>
+					`
+					break
 			
-		case TweetActionsTypes.SET_STATUS:
-			draft.status = action.payload
-			break
-			
-		case TweetActionsTypes.SET_FORM_STATUS:
-			draft.formStatus = action.payload
-			break
-			
-		case TweetActionsTypes.FETCH_TWEETS:
-			draft.items = []
-			draft.status = Status.LOADING
-			break
-			
-		case TweetActionsTypes.ADD_TWEET:
-			draft.formStatus = FormStatus.LOADING
-			break
-			
-		case TweetActionsTypes.PUSH_TWEET:
-			draft.items.push(action.payload)
-			draft.formStatus = FormStatus.ADDED
+				default:
+					break
+			}
+			consoleLog(`action setted: %c${action.payload}`)
 			break
 
 		default:
 			break
 	}
-}, initialTweets)
+}, appInitial)
 
 
-export default tweetsReducer
+export default appReducer

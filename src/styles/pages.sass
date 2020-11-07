@@ -47,7 +47,7 @@
 			box-shadow: $bs
 			transition: $tr
 			z-index: 1
-			svg
+			.menu-icon
 				width: 1.75rem
 				height: 1.75rem
 				@extend %app-icon
@@ -63,7 +63,7 @@
 				top: 50%
 				width: 1.75rem
 				transform: translateY(-50%)
-				svg
+				.menu-icon
 					&:not(:last-child)
 						margin-bottom: 1.5em
 				&.sub
@@ -77,12 +77,24 @@
 
 			&-topright
 				display: flex
+				align-items: center
 				right: calc(2rem + 1.75rem)
 				top: 2rem
-				svg
+				.menu-icon
 					&:not(:last-child)
 						margin-right: 1.5em
 			
+			&-middleright
+				right: calc(2rem + 1.75rem)
+				top: 50%
+				width: 13rem
+				text-align: left
+				transform: translateY(-50%)
+				h3
+					margin-bottom: .5em
+				p
+					font-size: .85em
+
 			&-bottomright
 				display: flex
 				right: calc(2rem + 1.75rem)

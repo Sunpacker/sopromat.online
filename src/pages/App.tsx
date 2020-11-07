@@ -6,7 +6,8 @@ import { NextSeo } from 'next-seo'
 const CanvasComponent = dynamic((): any => import('../components/app/Canvas'), { ssr: false })
 const LeftMenuComponent = dynamic((): any => import('../components/app/LeftMenu'), { ssr: false })
 const TopRightMenuComponent = dynamic((): any => import('../components/app/TopRightMenu'), { ssr: false })
-const BottomRightMenuComponent = dynamic((): any => import('../components/app/BottomRightMenu'), { ssr: false })
+const MiddleRightMenuComponent = dynamic((): any => import('../components/app/MiddleRightMenu'), { ssr: false })
+// const BottomRightMenuComponent = dynamic((): any => import('../components/app/BottomRightMenu'), { ssr: false })
 
 const App: React.FC = (): React.ReactElement => {
 	const SEO = {
@@ -19,7 +20,8 @@ const App: React.FC = (): React.ReactElement => {
 			<div className="menus">
 				<LeftMenuComponent />
 				<TopRightMenuComponent />
-				<BottomRightMenuComponent />
+				<MiddleRightMenuComponent />
+				{/* <BottomRightMenuComponent /> */}
 			</div>
 			<CanvasComponent />
 		</div>

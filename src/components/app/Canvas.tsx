@@ -31,7 +31,7 @@ const Canvas: React.FC = (): React.ReactElement => {
 	const history = useSelector(selectHistory)
 
 	let [hideCursor, setHideCursor] = useState<boolean>(false)
-	let [preplacementComponent, setPreplacementComponent] = useState<any>()
+	let [preplacementComponent, setPreplacementComponent] = useState<any | null>(null)
 	let [historyComponents, setHistoryComponents] = useState<any[]>([])
 	
 	function drawGrid() {
@@ -157,7 +157,12 @@ const Canvas: React.FC = (): React.ReactElement => {
 	}, [history])
 
 	useEffect(() => {
-		currentAction === Actions.SELECT ? setHideCursor(false) : setHideCursor(true)
+		if(currentAction === Actions.SELECT) {
+			setHideCursor(false)
+			setPreplacementComponent(null)
+		 } else {
+			setHideCursor(true)
+		 }
 	}, [currentAction])
 
 	useEffect(() => {

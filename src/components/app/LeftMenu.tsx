@@ -49,7 +49,6 @@ const LeftMenu: React.FC = (): React.ReactElement => {
 			switch (action) {
 				case Actions.SELECT:
 					dispatch(setAction(Actions.SELECT))
-					// setCurrentCursor(SelectIcon)
 					break
 				case Actions.NODE:
 					dispatch(setAction(Actions.NODE))

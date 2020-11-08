@@ -9,14 +9,14 @@ export enum Actions {
 	LOAD = 'LOAD',
 }
 
-interface IObject {
+export interface IObject {
+	id: string;
 	position: { x: number; y: number };
 	type: Actions;
-	fill: string;
 }
 
 export interface IApp {
-	objects: IObject[];
+	history: IObject[];
 	currentAction: Actions;
 	tip: string;
 	// scale: number; // TODO: масштаб рабочей области

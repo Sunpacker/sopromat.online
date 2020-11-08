@@ -5,11 +5,9 @@ import { Actions, IApp } from './state'
 
 
 const appInitial: IApp = {
+	history: [],
 	currentAction: Actions.SELECT,
-	tip: `
-		<h3>Выбрать</h3>
-		<p>Редактирование элемента.</p>
-	`
+	tip: '<h3>Выбрать</h3> <p>Редактирование элемента.</p>'
 }
 
 const appReducer = produce((draft: Draft<IApp>, action: AppActions) => {
@@ -71,6 +69,16 @@ const appReducer = produce((draft: Draft<IApp>, action: AppActions) => {
 					break
 			}
 			consoleLog(`action setted: %c${action.payload}`)
+			break
+
+		case AppActionsTypes.PUSH_HISTORY_ITEM:
+			draft.history = [ ...draft.history, action.payload ]
+			consoleLog(`objects history has increased by: %c${action.payload.type}`)
+			break
+
+		case AppActionsTypes.REMOVE_HISTORY_ITEM:
+			draft.history.splice(draft.history.findIndex(object => object.id === action.payload), 1)
+			consoleLog(`objects history has decreased by %c${action.payload}`)
 			break
 
 		default:

@@ -46,3 +46,9 @@ $bs: 0 0 1.5rem rgba(0,0,0,.06) // box-shadow
 	&.active
 		path, rect, circle
 			fill: $primary
+	&.disabled
+		path, rect, circle
+			fill: $lighten-grey
+		&:hover
+			cursor: no-drop
+			transform: scale(1)
